@@ -2,28 +2,30 @@
 using System.Collections.Generic;
 using System.Text;
 
-using static FOA.MaterialProperties;
-
 namespace FOA {
-    /// <summary>
-    /// A preset for a material.
-    /// </summary>
     class MaterialProfile {
-        public Dictionary<MaterialProperties, float> DefaultValues { get; }
+        public HashSet<Property> Properties { get; }
 
-        MaterialProfile(params (MaterialProperties property, float amount)[] values) {
-            DefaultValues = new Dictionary<MaterialProperties, float>();
-
-            foreach (var prop in values)
-                DefaultValues[prop.property] = prop.amount;
+        MaterialProfile() {
+            Properties = new HashSet<Property>();
+        }
+        /// <summary>
+        /// Construct a profile from comma-separated name / value pairs.
+        /// </summary>
+        MaterialProfile(string input) : this() {
+            foreach (string property in input.Split(',')) {
+                string[] values = property.Split(' ');
+                Properties.Add(new Property(values[0], float.Parse(values[1])));
+            }
         }
 
-        #region Profiles
+        public static implicit operator MaterialProfile(string input)
+            => new MaterialProfile(input);
 
-        public static MaterialProfile Wood = new MaterialProfile(
-            (Flammable, 10),
-            (Porous, 2));
+        #region     Profiles
 
-        #endregion
+        public static MaterialProfile Wood = "Flammability 10,Porousness 2";
+
+        #endregion  Profiles
     }
 }
