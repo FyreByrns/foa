@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 using Otter.Core;
 
 namespace FOA {
     class SystemicEntity : Entity {
-        public HashSet<Property> Properties { get; private set; }
+        public SystemicEntityState State { get; private set; }
+        public HashSet<SystemicProperty> Properties { get; private set; }
 
         /// <summary>
         /// Whether the entity has a property with a certain name.
         /// </summary>
         public bool HasProperty(string propertyName) {
-            foreach (Property property in Properties)
+            foreach (SystemicProperty property in Properties)
                 if (propertyName == property.Name)
                     return true;
             return false;
@@ -27,7 +28,8 @@ namespace FOA {
         }
 
         public SystemicEntity() {
-            Properties = new HashSet<Property>();
+            State = new SystemicEntityState();
+            Properties = new HashSet<SystemicProperty>();
         }
     }
 }

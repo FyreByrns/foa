@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace FOA {
-    class Property {
+    class SystemicProperty {
         public string Name { get; }
         public float Value { get; set; }
 
-        public Property(string name, float value) {
+        public SystemicProperty(string name, float value) {
             Name = name;
             Value = value;
         }
