@@ -12,4 +12,5 @@ When the variable no longer reaches the threshold, the property becomes inactive
  - Frozen
  - Electrified
  - Waterlogged (may change to "Soaked" with variables for various different fluids)
-*dev team, add more here*
+
+</br>*dev team, add more here*
