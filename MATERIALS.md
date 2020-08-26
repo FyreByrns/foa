@@ -7,7 +7,11 @@ Properties of an object are clear state changes, like "Aflame" or "Broken".</br>
 Each property is bound to a [Systemic Variable](VARIABLES.md), and when that variable reaches a certain threshold, the property becomes active.</br>
 When the variable no longer reaches the threshold, the property becomes inactive.</br>
 
+[Material Profiles](FOA/MaterialProfile.cs) can be created to hold common properties which are shared between objects of the same material.</br>
+For example, [wooden objects](FOA/MaterialProfile.cs#L18) would share "Aflame" and "Waterlogged", with similar thresholds.
+
 ## Properties
+[SystemicProperty.cs](FOA/SystemicProperty.cs)
  - Aflame
  - Frozen
  - Electrified
