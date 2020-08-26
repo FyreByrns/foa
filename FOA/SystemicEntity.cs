@@ -8,28 +8,25 @@ using Otter.Core;
 namespace FOA {
     class SystemicEntity : Entity {
         public SystemicEntityState State { get; private set; }
-        public HashSet<SystemicProperty> Properties { get; private set; }
+        public Dictionary<string, SystemicProperty> Properties;
 
         /// <summary>
         /// Whether the entity has a property with a certain name.
         /// </summary>
-        public bool HasProperty(string propertyName) {
-            foreach (SystemicProperty property in Properties)
-                if (propertyName == property.Name)
-                    return true;
-            return false;
-        }
+        public bool HasProperty(string propertyName)
+            => Properties.ContainsKey(propertyName);
 
         /// <summary>
         /// Apply a material profile to the object.
         /// </summary>
         public void ApplyMaterialProfile(MaterialProfile profile) {
-            Properties = profile.Properties;
+            foreach (SystemicProperty property in profile.Properties)
+                Properties[property.Name] = property;
         }
 
         public SystemicEntity() {
             State = new SystemicEntityState();
-            Properties = new HashSet<SystemicProperty>();
+            Properties = new Dictionary<string, SystemicProperty>();
         }
     }
 }
