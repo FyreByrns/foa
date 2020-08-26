@@ -8,7 +8,8 @@ Each property is bound to a [Systemic Variable](VARIABLES.md), and when that var
 When the variable no longer reaches the threshold, the property becomes inactive.</br>
 
 [Material Profiles](FOA/MaterialProfile.cs) can be created to hold common properties which are shared between objects of the same material.</br>
-For example, [wooden objects](FOA/MaterialProfile.cs#L18) would share "Aflame" and "Waterlogged", with similar thresholds.
+For example, [wooden objects](FOA/MaterialProfile.cs#L18) would share "Aflame" and "Waterlogged", with similar thresholds.</br>
+Current notation for declaring a profile is a list of strings, each in the format `<Property Name>:<Related Variable> <above/below> <threshold>`.
 
 ## Properties
 [SystemicProperty.cs](FOA/SystemicProperty.cs)
