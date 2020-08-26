@@ -15,7 +15,7 @@ namespace FOA {
 
         #region     Profiles
 
-        public static MaterialProfile Wood = new MaterialProfile("Aflame:Temperature above 10", "Waterlogged:Moisture above 20");
+        public static MaterialProfile Wood = new MaterialProfile("Aflame:Temperature above Flashpoint and Dry", "Wet:Moisture above Soakpoint", "Dry:Moisture below Drypoint");
 
         #endregion  Profiles
     }

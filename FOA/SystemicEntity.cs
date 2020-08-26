@@ -17,6 +17,15 @@ namespace FOA {
             => Properties.ContainsKey(propertyName);
 
         /// <summary>
+        /// Whether a property is active on the entity.
+        /// </summary>
+        public bool PropertyActive(string propertyName) {
+            if (!HasProperty(propertyName)) 
+                return false;
+            return Properties[propertyName].Active;
+        }
+
+        /// <summary>
         /// Apply a material profile to the object.
         /// </summary>
         public void ApplyMaterialProfile(MaterialProfile profile) {

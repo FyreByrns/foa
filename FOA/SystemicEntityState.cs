@@ -6,6 +6,7 @@ namespace FOA {
     /// </summary>
     public class SystemicEntityState {
         public HashSet<SystemicVariable> Variables { get; private set; }
+        public HashSet<SystemicConstant> Constants { get; private set; }
 
         /// <summary>
         /// Returns whether the state has a variable by name.
@@ -61,6 +62,52 @@ namespace FOA {
                     return variable;
 
             // Should never be reached.
+            return null;
+        }
+
+        /// <summary>
+        /// Set a constant value by name. Cannot be used to set the same constant twice.
+        /// </summary>
+        public void SetConstant(string name, float value) {
+            if (!HasConstant(name))
+                Constants.Add(new SystemicConstant(name, value));
+        }
+
+        /// <summary>
+        /// Returns whether the state has a constant by name.
+        /// </summary>
+        public bool HasConstant(string name) {
+            foreach (SystemicConstant constant in Constants)
+                if (constant.Name == name)
+                    return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Returns a constant value by name.
+        /// </summary>
+        public float GetConstantValue(string name) {
+            SystemicConstant constant = GetConstant(name);
+
+            if (constant != null)
+                return constant.Value;
+            return 0;
+        }
+
+        /// <summary>
+        /// Returns a constant by name, if it exists.
+        /// </summary>
+        public SystemicConstant GetConstant(string name) {
+            // If the constant doesn't exist, return null.
+            if (!HasConstant(name))
+                return null;
+
+            // Loop through constants to find matching name.
+            foreach (SystemicConstant constant in Constants)
+                if (constant.Name == name)
+                    return constant;
+
+            // Should never be reached
             return null;
         }
 
