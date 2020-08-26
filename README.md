@@ -2,4 +2,4 @@
 Systemic top-down RPG
 
 ## Systems
- - [ ] [Materials System](MATERIALS.md)
+ - [ ] [Materials](MATERIALS.md)
