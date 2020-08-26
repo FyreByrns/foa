@@ -18,7 +18,8 @@ namespace FOA {
         public override void Update() {
             base.Update();
 
-            // TODO: Get all systemic entities within collider, modify affected variable by amount.
+            foreach (SystemicEntity entity in Collider.CollideEntities<SystemicEntity>(X, Y, CollisionTags.SystemicAreaOfEffect))
+                entity.State.ModifyValue(VariableAffected, AmountPerFrame);
         }
 
         public override void Render() {
