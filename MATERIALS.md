@@ -17,7 +17,8 @@ Current notation for declaring a profile is a list of strings, each in the forma
  - Aflame
  - Frozen
  - Electrified
- - Waterlogged (may change to "Soaked" with variables for various different fluids)
+ - Wet (may change to "Soaked" with variables for various different fluids)
+ - Dry
  - Broken
  - Deteriorated
 
