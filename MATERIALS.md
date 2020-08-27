@@ -10,7 +10,7 @@ When the variable no longer reaches the threshold, the property becomes inactive
 [Material Profiles](FOA/MaterialProfile.cs) can be created to hold common properties which are shared between objects of the same material.</br>
 For example, [wooden objects](FOA/MaterialProfile.cs#L18) would share "Aflame" and "Waterlogged", with similar thresholds.</br>
 Current notation for declaring a property is `<Property Name>:<Condition 1> and <Condition 2> ...` where `<Condition>` is either `<Variable Name> <above/below> <Constant Name>` or `<Property Name>`</br>
-Current notation for declaring a profile is a list of strings, each in the format `<Property Name>:<Related Variable> <above/below> <threshold>`.
+Current notation for declaring a profile is a list of property strings.
 
 ## Properties
 [SystemicProperty.cs](FOA/SystemicProperty.cs)
