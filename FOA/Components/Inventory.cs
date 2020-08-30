@@ -5,6 +5,6 @@ namespace FOA.Components {
     /// Component attached to entities which have inventories.
     /// </summary>
     class Inventory : Component {
-        
+
     }
 }
