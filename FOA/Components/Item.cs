@@ -7,7 +7,7 @@ namespace FOA.Components {
     /// </summary>
     class Item : Component {
         public string Name { get; }
-        public Entity Item { get; }
+        public Entity ItemEntity { get; }
 
         public override void Added() {
             base.Added();
@@ -18,7 +18,7 @@ namespace FOA.Components {
         }
 
         public Item(Entity item, string name) {
-            Item = item;
+            ItemEntity = item;
             Name = name;
         }
     }
