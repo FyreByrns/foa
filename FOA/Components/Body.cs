@@ -34,14 +34,34 @@ namespace FOA.Components {
         /// <summary>
         /// Make a humanoid body.
         /// </summary>
+        /// <param name="fingers">number of fingers</param>
+        /// <param name="toes">number of toes</param>
+        /// <param name="teeth">number of teeth</param>
+        /// <param name="ribs">number of ribs</param>
+        /// <param name="meatTorso">meat in the torso</param>
+        /// <param name="meatArms">meat in each arm</param>
+        /// <param name="meatLegs">meat in each leg</param>
+        /// <param name="meatFactor">value which all meat values are multiplied by</param>
+        /// <param name="fatTorso">fat in torso</param>
+        /// <param name="fatArms">fat in arms</param>
+        /// <param name="fatLegs">fat in legs</param>
+        /// <param name="fatFactor">value which all fat values are multiplied by</param>
+        /// <param name="partProfile"><see cref="MaterialProfile"/> of the body overall, defaults to <see cref="MaterialProfile.FleshWithBones"/></param>
+        /// <param name="boneProfile"><see cref="MaterialProfile"/> of the bones, defaults to <see cref="MaterialProfile.Bone"/></param>
+        /// <param name="fleshProfile"><see cref="MaterialProfile"/> of the flesh, defaults to <see cref="MaterialProfile.Flesh"/></param>
+        /// <param name="fatProfile"><see cref="MaterialProfile"/> of the fat, defaults to <see cref="MaterialProfile.Fat"/></param>
+        /// <returns></returns>
         public static Body MakeHumanoid(
             int fingers = 5, int toes = 5,
             int teeth = 32, int ribs = 24,
             int meatTorso = 6, int meatArms = 2, int meatLegs = 3, float meatFactor = 1f,
             int fatTorso = 2, int fatArms = 0, int fatLegs = 1, float fatFactor = 1f,
-            MaterialProfile partProfile = null, MaterialProfile boneProfile = null, MaterialProfile fleshProfile = null, MaterialProfile fatProfile = null) {
+            MaterialProfile partProfile = null, MaterialProfile boneProfile = null, MaterialProfile fleshProfile = null, MaterialProfile fatProfile = null
+            ) {
+            // Create body.
             Body body = new Body();
 
+            // Create and add all body parts.
             BodyPart head = body.Base = BodyPart.MakeHead();
             BodyPart neck = head.AddChild(BodyPart.MakeNeck());
             BodyPart torso = neck.AddChild(BodyPart.MakeTorso());
@@ -65,6 +85,7 @@ namespace FOA.Components {
                 legRight, footRight,
             });
 
+            // Apply default human item profiles if none are specified.
             partProfile ??= MaterialProfile.FleshWithBones;
             boneProfile ??= MaterialProfile.Bone;
             fleshProfile ??= MaterialProfile.Flesh;
@@ -73,6 +94,7 @@ namespace FOA.Components {
             if (partProfile != null)
                 body.ApplyMaterialProfile(partProfile);
 
+            // Apply meat and fat factors.
             meatTorso = (int)(meatTorso * meatFactor);
             meatArms = (int)(meatArms * meatFactor);
             meatLegs = (int)(meatLegs * meatFactor);
@@ -81,6 +103,7 @@ namespace FOA.Components {
             fatArms = (int)(fatArms * fatFactor);
             fatLegs = (int)(fatLegs * fatFactor);
 
+            // Add inventories and items.
             Inventory headInventory = head.AddComponent<Inventory>();
             headInventory.AddItem("Skull", 1, boneProfile);
             headInventory.AddItem("Jawbone", 1, boneProfile);
@@ -119,6 +142,7 @@ namespace FOA.Components {
             legRightInventory.AddItem("Meat", meatLegs, fleshProfile);
             legRightInventory.AddItem("Fat", fatLegs, fatProfile);
 
+            // Return the created body.
             return body;
         }
 
