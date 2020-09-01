@@ -6,12 +6,13 @@ namespace FOA.Components {
     /// Component attached to entities which have inventories.
     /// </summary>
     class Inventory : Component {
+        public HashSet<Item> Items { get; }
+
         /// <summary>
-        /// Get the items in this inventory.
+        /// Add an item by name with a count.
         /// </summary>
-        public IEnumerable<Item> GetItems() {
-            foreach (Item item in Entity.GetComponents<Item>())
-                yield return item;
+        public void AddItem(string name, int count = 1) {
+            Items.Add(new Item(name, count));
         }
     }
 }
