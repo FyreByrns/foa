@@ -34,7 +34,12 @@ namespace FOA.Components {
         /// <summary>
         /// Make a humanoid body.
         /// </summary>
-        public static Body MakeHumanoid(int fingers = 5, int toes = 5, MaterialProfile partProfile = null, MaterialProfile boneProfile = null, MaterialProfile fleshProfile = null) {
+        public static Body MakeHumanoid(
+            int fingers = 5, int toes = 5,
+            int teeth = 32, int ribs = 24,
+            int meatTorso = 6, int meatArms = 2, int meatLegs = 3, float meatFactor = 1f,
+            int fatTorso = 2, int fatArms = 0, int fatLegs = 1, float fatFactor = 1f,
+            MaterialProfile partProfile = null, MaterialProfile boneProfile = null, MaterialProfile fleshProfile = null, MaterialProfile fatProfile = null) {
             Body body = new Body();
 
             BodyPart head = body.Base = BodyPart.MakeHead();
@@ -63,42 +68,56 @@ namespace FOA.Components {
             partProfile ??= MaterialProfile.FleshWithBones;
             boneProfile ??= MaterialProfile.Bone;
             fleshProfile ??= MaterialProfile.Flesh;
+            fatProfile ??= MaterialProfile.Fat;
 
             if (partProfile != null)
                 body.ApplyMaterialProfile(partProfile);
 
+            meatTorso = (int)(meatTorso * meatFactor);
+            meatArms = (int)(meatArms * meatFactor);
+            meatLegs = (int)(meatLegs * meatFactor);
+
+            fatTorso = (int)(fatTorso * fatFactor);
+            fatArms = (int)(fatArms * fatFactor);
+            fatLegs = (int)(fatLegs * fatFactor);
+
             Inventory headInventory = head.AddComponent<Inventory>();
             headInventory.AddItem("Skull", 1, boneProfile);
             headInventory.AddItem("Jawbone", 1, boneProfile);
-            headInventory.AddItem("Tooth", 32, boneProfile);
+            headInventory.AddItem("Tooth", teeth, boneProfile);
 
             Inventory torsoInventory = torso.AddComponent<Inventory>();
-            torsoInventory.AddItem("Rib", 24, boneProfile);
-            torsoInventory.AddItem("Meat", 6, fleshProfile);
+            torsoInventory.AddItem("Rib", ribs, boneProfile);
+            torsoInventory.AddItem("Meat", meatTorso, fleshProfile);
+            torsoInventory.AddItem("Fat", fatTorso, fatProfile);
 
             Inventory armLeftInventory = armLeft.AddComponent<Inventory>();
             armLeftInventory.AddItem("Humerus", 1, boneProfile);
             armLeftInventory.AddItem("Ulna", 1, boneProfile);
             armLeftInventory.AddItem("Radius", 1, boneProfile);
-            armLeftInventory.AddItem("Meat", 2, fleshProfile);
+            armLeftInventory.AddItem("Meat", meatArms, fleshProfile);
+            armLeftInventory.AddItem("Fat", fatArms, fatProfile);
 
             Inventory armRightInventory = armRight.AddComponent<Inventory>();
             armRightInventory.AddItem("Humerus", 1, boneProfile);
             armRightInventory.AddItem("Ulna", 1, boneProfile);
             armRightInventory.AddItem("Radius", 1, boneProfile);
-            armRightInventory.AddItem("Meat", 2, fleshProfile);
+            armRightInventory.AddItem("Meat", meatArms, fleshProfile);
+            armRightInventory.AddItem("Fat", fatArms, fatProfile);
 
             Inventory legLeftInventory = legLeft.AddComponent<Inventory>();
             legLeftInventory.AddItem("Femur", 1, boneProfile);
             legLeftInventory.AddItem("Fibula", 1, boneProfile);
             legLeftInventory.AddItem("Tibula", 1, boneProfile);
-            legLeftInventory.AddItem("Meat", 3, fleshProfile);
+            legLeftInventory.AddItem("Meat", meatLegs, fleshProfile);
+            legLeftInventory.AddItem("Fat", fatLegs, fatProfile);
 
             Inventory legRightInventory = legRight.AddComponent<Inventory>();
             legRightInventory.AddItem("Femur", 1, boneProfile);
             legRightInventory.AddItem("Fibula", 1, boneProfile);
             legRightInventory.AddItem("Tibula", 1, boneProfile);
-            legRightInventory.AddItem("Meat", 3, fleshProfile);
+            legRightInventory.AddItem("Meat", meatLegs, fleshProfile);
+            legRightInventory.AddItem("Fat", fatLegs, fatProfile);
 
             return body;
         }

@@ -44,6 +44,11 @@ namespace FOA {
         public static MaterialProfile FleshWithBones = new MaterialProfile(
             ).InheritingFrom(Flesh, Bone);
 
+        public static MaterialProfile Fat = new MaterialProfile(
+            "Aflame:Temperature above Flashpoint",
+            "Boiling:Temperature above Boilingpoint"
+            ).InheritingFrom(Flesh);
+
         #endregion  Profiles
     }
 }
