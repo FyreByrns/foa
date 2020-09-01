@@ -20,5 +20,9 @@ namespace FOA.Components {
             if (profile != null)
                 item.ApplyMaterialProfile(profile);
         }
+
+        public Inventory() {
+            Items = new HashSet<Item>();
+        }
     }
 }
