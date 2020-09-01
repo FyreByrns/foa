@@ -9,7 +9,7 @@ namespace FOA.Scenes {
 
         public TestScene() {
             SystemicEntity player = new SystemicEntity();
-            player.AddComponent(Body.MakeHumanoid(fingers: 5, toes: 5, profile: MaterialProfile.FleshWithBones));
+            player.AddComponent(Body.MakeHumanoid(fingers: 5, toes: 5, partProfile: MaterialProfile.FleshWithBones));
 
             player.AddGraphic(Otter.Graphics.Drawables.Image.CreateRectangle(40, 40, Otter.Graphics.Color.White));
             player.Graphic.CenterOrigin();

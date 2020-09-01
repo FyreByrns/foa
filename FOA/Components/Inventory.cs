@@ -11,8 +11,12 @@ namespace FOA.Components {
         /// <summary>
         /// Add an item by name with a count.
         /// </summary>
-        public void AddItem(string name, int count = 1) {
-            Items.Add(new Item(name, count));
+        public void AddItem(string name, int count = 1, MaterialProfile profile = null) {
+            Item item = new Item(name, count);
+            Items.Add(item);
+
+            if (profile != null)
+                item.ApplyMaterialProfile(profile);
         }
     }
 }

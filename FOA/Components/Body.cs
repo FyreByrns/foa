@@ -34,21 +34,21 @@ namespace FOA.Components {
         /// <summary>
         /// Make a humanoid body.
         /// </summary>
-        public static Body MakeHumanoid(int fingers = 5, int toes = 5, MaterialProfile profile = null) {
+        public static Body MakeHumanoid(int fingers = 5, int toes = 5, MaterialProfile partProfile = null, MaterialProfile boneProfile = null, MaterialProfile fleshProfile = null) {
             Body body = new Body();
 
-            var head = body.Base = BodyPart.MakeHead();
-            var neck = head.AddChild(BodyPart.MakeNeck());
-            var torso = neck.AddChild(BodyPart.MakeTorso());
-            var armLeft = torso.AddChild(BodyPart.MakeArm("Left"));
-            var armRight = torso.AddChild(BodyPart.MakeArm("Right"));
-            var legLeft = torso.AddChild(BodyPart.MakeLeg("Left"));
-            var legRight = torso.AddChild(BodyPart.MakeLeg("Right"));
+            BodyPart head = body.Base = BodyPart.MakeHead();
+            BodyPart neck = head.AddChild(BodyPart.MakeNeck());
+            BodyPart torso = neck.AddChild(BodyPart.MakeTorso());
+            BodyPart armLeft = torso.AddChild(BodyPart.MakeArm("Left"));
+            BodyPart armRight = torso.AddChild(BodyPart.MakeArm("Right"));
+            BodyPart legLeft = torso.AddChild(BodyPart.MakeLeg("Left"));
+            BodyPart legRight = torso.AddChild(BodyPart.MakeLeg("Right"));
 
-            var handLeft = armLeft.AddChild(BodyPart.MakeAppendage("Left", "Hand", fingers));
-            var handRight = armRight.AddChild(BodyPart.MakeAppendage("Right", "Hand", fingers));
-            var footLeft = legLeft.AddChild(BodyPart.MakeAppendage("Left", "Foot", toes));
-            var footRight = legRight.AddChild(BodyPart.MakeAppendage("Right", "Foot", toes));
+            BodyPart handLeft = armLeft.AddChild(BodyPart.MakeAppendage("Left", "Hand", fingers));
+            BodyPart handRight = armRight.AddChild(BodyPart.MakeAppendage("Right", "Hand", fingers));
+            BodyPart footLeft = legLeft.AddChild(BodyPart.MakeAppendage("Left", "Foot", toes));
+            BodyPart footRight = legRight.AddChild(BodyPart.MakeAppendage("Right", "Foot", toes));
 
             body.AllParts.AddRange(new[] {
                 head,
@@ -60,8 +60,45 @@ namespace FOA.Components {
                 legRight, footRight,
             });
 
-            if (profile != null)
-                body.ApplyMaterialProfile(profile);
+            partProfile ??= MaterialProfile.FleshWithBones;
+            boneProfile ??= MaterialProfile.Bone;
+            fleshProfile ??= MaterialProfile.Flesh;
+
+            if (partProfile != null)
+                body.ApplyMaterialProfile(partProfile);
+
+            Inventory headInventory = head.AddComponent<Inventory>();
+            headInventory.AddItem("Skull", 1, boneProfile);
+            headInventory.AddItem("Jawbone", 1, boneProfile);
+            headInventory.AddItem("Tooth", 32, boneProfile);
+
+            Inventory torsoInventory = torso.AddComponent<Inventory>();
+            torsoInventory.AddItem("Rib", 24, boneProfile);
+            torsoInventory.AddItem("Meat", 6, fleshProfile);
+
+            Inventory armLeftInventory = armLeft.AddComponent<Inventory>();
+            armLeftInventory.AddItem("Humerus", 1, boneProfile);
+            armLeftInventory.AddItem("Ulna", 1, boneProfile);
+            armLeftInventory.AddItem("Radius", 1, boneProfile);
+            armLeftInventory.AddItem("Meat", 2, fleshProfile);
+
+            Inventory armRightInventory = armRight.AddComponent<Inventory>();
+            armRightInventory.AddItem("Humerus", 1, boneProfile);
+            armRightInventory.AddItem("Ulna", 1, boneProfile);
+            armRightInventory.AddItem("Radius", 1, boneProfile);
+            armRightInventory.AddItem("Meat", 2, fleshProfile);
+
+            Inventory legLeftInventory = legLeft.AddComponent<Inventory>();
+            legLeftInventory.AddItem("Femur", 1, boneProfile);
+            legLeftInventory.AddItem("Fibula", 1, boneProfile);
+            legLeftInventory.AddItem("Tibula", 1, boneProfile);
+            legLeftInventory.AddItem("Meat", 3, fleshProfile);
+
+            Inventory legRightInventory = legRight.AddComponent<Inventory>();
+            legRightInventory.AddItem("Femur", 1, boneProfile);
+            legRightInventory.AddItem("Fibula", 1, boneProfile);
+            legRightInventory.AddItem("Tibula", 1, boneProfile);
+            legRightInventory.AddItem("Meat", 3, fleshProfile);
 
             return body;
         }
