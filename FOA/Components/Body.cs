@@ -148,6 +148,13 @@ namespace FOA.Components {
 
         #endregion  Body Makers
 
+        public void AddAllPartsToScene() {
+            foreach (BodyPart part in AllParts) {
+                part.AddComponent<Tie>(Entity, 0, 0);
+                Entity.Scene.Add(part);
+            }
+        }
+
         public Body() {
             AllParts = new List<BodyPart>();
         }
@@ -206,7 +213,7 @@ namespace FOA.Components {
 
             #endregion  Part Makers
 
-            public BodyPart(BodyPart parent, int numberOfChildren, string name) {
+            public BodyPart(BodyPart parent, int numberOfChildren, string name) : base() {
                 Parent = parent;
                 Children = new List<BodyPart>(numberOfChildren);
                 Name = name;

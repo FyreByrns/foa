@@ -47,7 +47,6 @@ namespace FOA {
         public static MaterialProfile Fat = new MaterialProfile(
             "Aflame:Temperature above Flashpoint",
             "Boiling:Temperature above Boilingpoint",
-            "Slippery:Liquid",
             "Liquid:Temperature above Freezingpoint"
             ).InheritingFrom(Flesh);
 

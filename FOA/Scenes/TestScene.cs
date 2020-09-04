@@ -9,12 +9,13 @@ namespace FOA.Scenes {
 
         public TestScene() {
             SystemicEntity player = new SystemicEntity();
-            player.AddComponent(Body.MakeHumanoid(fingers: 5, toes: 5, partProfile: MaterialProfile.FleshWithBones));
-
-            player.AddGraphic(Otter.Graphics.Drawables.Image.CreateRectangle(40, 40, Otter.Graphics.Color.White));
-            player.Graphic.CenterOrigin();
-            player.AddComponent<PlayerController>();
             Add(player);
+            player.AddComponent(Body.MakeHumanoid(fingers: 5, toes: 5, partProfile: MaterialProfile.FleshWithBones));
+            player.AddComponent<PlayerController>();
+            player.GetComponent<Body>().AddAllPartsToScene();
+            player.GetComponent<Body>().GetPart("Head").Debug = true;
+
+            CameraFocus = player;
         }
     }
 }
