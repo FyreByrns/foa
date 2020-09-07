@@ -10,85 +10,80 @@ using System.Text;
 
 namespace FOA.Components {
     class WeaponManager : Component {
-        Image Crosshair;
-        public Weapon RightHand;
         public float TargetX, TargetY;
-        public bool Attacking;
+        public Weapon Weapon;
+        public PolygonCollider WeaponCollider;
 
-        float attackTimer;
-
-        public void Attack() {
-            if(!Attacking)
-            Attacking = true;
-        }
-
-        public override void Added() {
-            base.Added();
-
-            RightHand = new Weapon() {
-                Reach = 100,
-                Shape = new PolygonCollider(new Polygon(new float[]
-            {
-                0, -10,
-                100, -10,
-                110, 0,
-                100, 10,
-                0, 10
-            })),
-                RestingAngleModifier = -20,
-                HitMovementR = 10,
-                HitTime = 10,
-            };
-
-            RightHand.Shape.OriginY = GetComponent<BodyHitbox>().RightSide.OriginY*2;
-
-            Entity.AddCollider(RightHand.Shape);
-
-            Crosshair = Image.CreateCircle(5, Color.Gold);
-            Entity.AddGraphic(Crosshair);
-        }
-
-        public override void Render() {
-            base.Render();
-
-            RightHand.Shape.Render(Color.White);
+        public void Attack(CombatStance stance = CombatStance.Concentrated) {
+            if (Weapon == null) return;
+            if (Weapon.AttackState == 0)
+                Weapon.AttackState = 1;
         }
 
         public override void Update() {
             base.Update();
 
-            Crosshair.X = 100;
-            Crosshair.Y = 0;
-
-            float angle = Util.Angle(Entity.X, Entity.Y, TargetX, TargetY);
-
-            Vector2 loc = Util.Rotate(Crosshair.X, Crosshair.Y, angle);
-            Crosshair.X = loc.X;
-            Crosshair.Y = loc.Y;
-
-
-            if (Attacking) {
-                attackTimer += Scene.Game.DeltaTime;
-
-                if (attackTimer > RightHand.HitTime) {
-                    Attacking = false;
-                    attackTimer = 0;
+            // If attacking, update the weapon
+            if (Weapon != null && Weapon.AttackState > 0) {
+                Weapon.timer += 1;
+                if (Weapon.timer > Weapon.TimeToChangeAttackState) {
+                    Weapon.timer = 0;
+                    Weapon.AttackState++;
+                    if (Weapon.AttackState >= Weapon.Hitboxes.Length)
+                        Weapon.AttackState = 0;
                 }
-                else {
-                    RightHand.Shape.Rotation = angle + attackTimer * RightHand.HitMovementR + RightHand.RestingAngleModifier;
-                }
+                Entity.RemoveCollider(WeaponCollider);
+                WeaponCollider = Weapon.CurrentHitbox;
+                Entity.AddCollider(WeaponCollider);
+                WeaponCollider.Rotation = Util.Angle(Entity.X, Entity.Y, Scene.MouseX, Scene.MouseY);
+                WeaponCollider.OriginY = -40;
             }
-            else {
-                RightHand.Shape.Rotation = angle + RightHand.RestingAngleModifier;
-            }
+        }
+
+        public override void Render() {
+            base.Render();
+
+            WeaponCollider?.Render(Color.Gold);
+        }
+
+        public override void Added() {
+            base.Added();
+            WeaponCollider = new PolygonCollider(new float[] { 0, 0, 1, 0, 0, 1, });
+            //Entity.RemoveCollider(WeaponCollider);
+            Entity.AddCollider(WeaponCollider);
+
+            Weapon = new Weapon(new PolygonCollider[] {
+                new PolygonCollider(new Polygon(new float[]{ 0,0, 0,0, 0,0,      }), CollisionTags.Combat),
+                new PolygonCollider(new Polygon(new float[]{ 10,20, 55,55, 60,0, }), CollisionTags.Combat),
+                new PolygonCollider(new Polygon(new float[]{ 10,10, 65,65, 80,0, }), CollisionTags.Combat),
+                new PolygonCollider(new Polygon(new float[]{ 10,20, 55,55, 60,0, }), CollisionTags.Combat),
+            });
         }
     }
 
+    /// <summary>
+    /// Contains hitboxes, timings.
+    /// </summary>
     class Weapon {
-        public float Reach;
-        public float RestingAngleModifier;
-        public float HitTime;
-        public float HitMovementX, HitMovementY, HitMovementR;
-        public PolygonCollider Shape;
+        /// <summary>
+        /// What stage of attack the weapon is in.
+        /// </summary>
+        public int AttackState = 0;
+        /// <summary>
+        /// How long it takes when attacking to move through attack states.
+        /// </summary>
+        public float TimeToChangeAttackState = 10f;
+        public float timer;
+
+        /// <summary>
+        /// Hitboxes for each attack state.
+        /// </summary>
+        public PolygonCollider[] Hitboxes;
+
+        public PolygonCollider CurrentHitbox => Hitboxes[AttackState];
+
+        public Weapon(params PolygonCollider[] hitboxes) {
+            Hitboxes = hitboxes;
+        }
     }
 }
