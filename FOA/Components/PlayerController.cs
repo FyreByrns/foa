@@ -4,6 +4,7 @@ using System.Text;
 
 using Otter.Core;
 using Otter.Components;
+using Otter.Utility;
 
 namespace FOA.Components {
     class PlayerController : Component {
@@ -22,6 +23,18 @@ namespace FOA.Components {
 
             Entity.X += movX * Speed * Scene.Game.DeltaTime;
             Entity.Y += movY * Speed * Scene.Game.DeltaTime;
+
+            // Rotate the body hitbox
+            GetComponent<BodyHitbox>().LeftSide.Rotation = Util.Angle(Entity.X, Entity.Y, Scene.MouseX, Scene.MouseY);
+            GetComponent<BodyHitbox>().RightSide.Rotation = Util.Angle(Entity.X, Entity.Y, Scene.MouseX, Scene.MouseY);
+
+            // Set the target of the weapon manager
+            GetComponent<WeaponManager>().TargetX = Scene.MouseX;
+            GetComponent<WeaponManager>().TargetY = Scene.MouseY;
+
+            // Attack
+            if (Scene.Input.MouseButtonDown(MouseButton.Left))
+                GetComponent<WeaponManager>().Attack();
         }
     }
 }

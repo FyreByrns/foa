@@ -9,11 +9,14 @@ namespace FOA.Scenes {
 
         public TestScene() {
             SystemicEntity player = new SystemicEntity();
-            Add(player);
-            player.AddComponent(Body.MakeHumanoid(fingers: 5, toes: 5, partProfile: MaterialProfile.FleshWithBones));
+            player.AddComponent<BodyHitbox>();
             player.AddComponent<PlayerController>();
-            player.GetComponent<Body>().AddAllPartsToScene();
-            player.GetComponent<Body>().GetPart("Head").Debug = true;
+            player.AddComponent<WeaponManager>();
+            Add(player);
+
+            SystemicEntity dummy = new SystemicEntity();
+            dummy.AddComponent<BodyHitbox>();
+            Add(dummy);
 
             CameraFocus = player;
         }
