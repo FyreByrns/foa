@@ -2,6 +2,7 @@
     enum CollisionTags {
         SystemicAreaOfEffect,
         Combat,
+        Wall,
     }
 
     enum CombatStance {

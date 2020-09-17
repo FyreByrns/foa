@@ -8,7 +8,7 @@ using Otter.Utility;
 
 namespace FOA.Components {
     class PlayerController : Component {
-        public float Speed { get; set; } = 10;
+        public float Speed { get; set; } = 5;
 
         public override void Update() {
             base.Update();
